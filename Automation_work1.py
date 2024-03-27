@@ -20,6 +20,9 @@ def check_output_mode(text, mode='line'):
 output_lines = check_output_mode("cat /etc/os-release", mode='line')
 output_words = check_output_mode("cat /etc/os-release", mode='word')
 
+print("Words from the output:")
+print(output_words)  # Вывод списка слов из вывода
+
 if 'VERSION="22.04.1 LTS (Jammy Jellyfish)"' in output_lines and 'VERSION_CODENAME=jammy' in output_lines:
     print("SUCCESS")
 
