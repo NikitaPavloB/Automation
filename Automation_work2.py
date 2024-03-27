@@ -29,3 +29,14 @@ def test_step4():
 def test_step5():
     # test5
     assert checkout(f"cd {FOLDER_TST}; 7z u {FOLDER_OUT}/arx2.7z", "Everything is Ok"), "test5 FAIL"
+def test_step6():
+    # test6 - проверка команды для вывода списка файлов (l)
+    res = checkout(f"cd {FOLDER_TST}; 7z l {FOLDER_OUT}/arx2.7z", "text1.txt")
+    assert res, "test6 FAIL"
+
+def test_step7():
+    # test7 - проверка команды для разархивирования с сохранением путей (x)
+    res = checkout(f"cd {FOLDER_TST}; 7z x {FOLDER_OUT}/arx2.7z -o{FOLDER_1} -y", "Everything is Ok")
+    res2 = checkout(f"ls {FOLDER_1}", "folder1/text1.txt")
+    assert res and res2, "test7 FAIL"
+
