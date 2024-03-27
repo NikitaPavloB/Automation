@@ -39,4 +39,9 @@ def test_step7():
     res = checkout(f"cd {FOLDER_TST}; 7z x {FOLDER_OUT}/arx2.7z -o{FOLDER_1} -y", "Everything is Ok")
     res2 = checkout(f"ls {FOLDER_1}", "folder1/text1.txt")
     assert res and res2, "test7 FAIL"
+def test_step8():
+    # test8 - проверка команды для расчета хеша (h)
+    res = checkout(f"cd {FOLDER_TST}; 7z h {FOLDER_OUT}/arx2.7z", "CRC32")
+    assert res, "test8 FAIL"
+
 
