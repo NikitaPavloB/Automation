@@ -29,16 +29,17 @@ def test_extract_command():
     assert res.returncode == 0
     assert "Everything is OK" in res.stdout
 
-output_lines = check_output_mode("cat /etc/os-release", mode='line')
-output_words = check_output_mode("cat /etc/os-release", mode='word')
+if __name__ == "__main__":
+    output_lines = check_output_mode("cat /etc/os-release", mode='line')
+    output_words = check_output_mode("cat /etc/os-release", mode='word')
 
-print("Words from the output:")
-print(output_words)  # Вывод списка слов из вывода
+    print("Words from the output:")
+    print(output_words)  # Вывод списка слов из вывода
 
-if 'VERSION="22.04.1 LTS (Jammy Jellyfish)"' in output_lines and 'VERSION_CODENAME=jammy' in output_lines:
-    print("SUCCESS")
+    if 'VERSION="22.04.1 LTS (Jammy Jellyfish)"' in output_lines and 'VERSION_CODENAME=jammy' in output_lines:
+        print("SUCCESS")
 
-if 'VERSION' in output_words:
-    print("The word 'VERSION' is present in the output.")
-else:
-    print("The word 'VERSION' is not present in the output.")
+    if 'VERSION' in output_words:
+        print("The word 'VERSION' is present in the output.")
+    else:
+        print("The word 'VERSION' is not present in the output.")
