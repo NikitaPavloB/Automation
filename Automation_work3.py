@@ -1,22 +1,16 @@
 import subprocess
 import yaml
+from checkers import checkout
 
 with open("config.yaml") as f:
     data = yaml.safe_load(f)
+
 FOLDER_TST = data["FOLDER_TST"]
 FOLDER_OUT = data["FOLDER_OUT"]
 FOLDER_1 = data["FOLDER_1"]
 
 
-def checkout(cmd, text):
-    result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, encoding='utf-8')
-    if text in result.stdout and result.returncode == 0:
-        return True
-    else:
-        return False
-
-
-def test_step1():
+def test_step1(clear_folders, make_folders, make_files):
     # test1
     res1 = checkout(f"cd {FOLDER_TST}; 7z a {FOLDER_OUT}/arx2.7z", "Everything is Ok")
     res2 = checkout(f"ls {FOLDER_OUT}", "arx2.7z")
@@ -51,11 +45,14 @@ def test_step6():
     assert res, "test6 FAIL"
 
 
-def test_step7():
+def test_step7(clear_folders, make_folders, make_files):
     # test7 - проверка команды для разархивирования с сохранением путей (x)
-    res = checkout(f"cd {FOLDER_TST}; 7z x {FOLDER_OUT}/arx2.7z -o{FOLDER_1} -y", "Everything is Ok")
-    res2 = checkout(f"ls {FOLDER_1}", "text.txt")
-    assert res and res2, "test7 FAIL"
+    res = []
+    res.append(checkout(f"cd {FOLDER_TST}; 7z a {FOLDER_OUT}/arx2.7z", "Everything is Ok"))
+    res.append(checkout(f"cd {FOLDER_TST}; 7z x {FOLDER_OUT}/arx2.7z -o{FOLDER_1} -y", "Everything is Ok"))
+    for item in make_files:
+        res.append(checkout(f"ls {FOLDER_1}", item))
+    assert all(res), "test7 FAIL"
 
 
 def test_step8():
