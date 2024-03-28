@@ -59,4 +59,14 @@ class TestPositive:
 
     def test_step7(self):
         cmd = "7z d arx.{}".format(data["type"])
-       
+        assert checkout(cmd, "Everything is Ok"), "test7 FAIL"
+
+    def test_step8(self, clear_folders, make_files):
+        res = []
+        for i in make_files:
+            cmd = "7z h {}".format(i)
+            res.append(checkout(cmd, "Everything is Ok"))
+            hash = getout("crc32 {}".format(i)).upper()
+            cmd = "7z h {}".format(i)
+            res.append(checkout(cmd, hash))
+        assert all(res), "test8 FAIL"
