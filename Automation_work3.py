@@ -9,6 +9,12 @@ FOLDER_TST = data["FOLDER_TST"]
 FOLDER_OUT = data["FOLDER_OUT"]
 FOLDER_1 = data["FOLDER_1"]
 
+# def test_step1(clear_folders, make_folders, make_files):
+#     # test1
+#     res = []
+#     res.append(checkout(f"cd {FOLDER_TST}; 7z a {FOLDER_OUT}/arx2.7z", "Everything is Ok"))
+#     res.append(checkout(f"ls {FOLDER_OUT}", "arx2.7z"))
+#     assert all(res), "test1 FAIL"
 
 def test_step1(clear_folders, make_folders, make_files):
     # test1
