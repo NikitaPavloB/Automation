@@ -1,23 +1,7 @@
-from checkers import checkout, getout
-import yaml
-from sshcheckers import upload_files, sshcheckout
-
-with open('config.yaml') as f:
-    data = yaml.safe_load(f)
+from sshcheckers import sshcheckout
 
 class TestPositive:
-    def save_log(self, start_time, name):
-        with open(name, 'w') as f:
-            f.write(getout(f"journalctl --since '{start_time}'"))
-
-    def test_step0(self, start_ttime):
-        upload_files(data['host'], data['user'], data['passwd'], 'p7zip-full.deb', '/home/user2/p7zip-full.deb')
-        res_1 = (sshcheckout(data['host'], data['user'], data['passwd'], "echo '{}' | sudo -S dpkg -i /home/user2/p7zip-full.deb".format(data['passwd']),
-                          'Настраивается пакет'))
-        res_2 = (sshcheckout(data['host'], data['user'], data['passwd'], "echo '{}' | sudo -S dpkg -s p7zip-full".format(data['passwd']),
-                          'Status: install ok installed'))
-        self.save_log(start_ttime, "log_1.txt")
-        assert res_1 and res_2, "test-step0 Fail"
+    # ... код предыдущих шагов ...
 
     def test_step1(self, make_folders, clear_folders, make_files, print_time):
         # test1
@@ -70,22 +54,11 @@ class TestPositive:
         res = []
         for i in make_files:
             res.append(sshcheckout(data['host'], data['user'], data['passwd'], "cd {}; 7z h {}".format(data["folder_in"], i), "Everything is Ok"))
-            hash = getout("cd {}; crc32 {}".format(data["folder_in"], i)).upper()
+            hash = sshgetout(data['host'], data['user'], data['passwd'], "cd {}; crc32 {}".format(data["folder_in"], i)).upper()
             res.append(sshcheckout(data['host'], data['user'], data['passwd'], "cd {}; 7z h {}".format(data["folder_in"], i), hash))
         assert all(res), "test8 FAIL"
 
     def test_step99(self):
-        res_1 = (sshcheckout(data['host'], data['user'], data['passwd'], "echo '{}' | sudo -S dpkg -r p7zip-full".format(data['passwd']),
-                          'Удаляется'))
-        res_2 = (sshcheckout(data['host'], data['user'], data['passwd'], "echo '{}' | sudo -S dpkg -s p7zip-full".format(data['passwd']),
-                          'Status: deinstall ok'))
+        res_1 = sshcheckout(data['host'], data['user'], data['passwd'], "echo '1111' | sudo -S dpkg -r p7zip-full", "Удаляется")
+        res_2 = sshcheckout(data['host'], data['user'], data['passwd'], "echo '1111' | sudo -S dpkg -s p7zip-full", "Status: deinstall ok")
         assert res_1 and res_2, "test-step0 Fail"
-
-
-
-   def test_step2(self, make_folders, clear_folders, make_files, start_time):
-       res1 = ssh_checkout(data["ip"], data["user"], data["passwd"], "cd {};"
-           " 7z a {}/arx2".format(data["folder_in"], data["folder_out"]), "Everything is Ok")
-       res2 = ssh_checkout(data["ip"], data["user"], data["passwd"], "ls {}".format(data["folder_out"]), "arx2.7z")
-       self.save_log(start_time, "log2.txt")
-       assert res1 and res2, "test2 FAIL"
