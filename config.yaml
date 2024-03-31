@@ -5,3 +5,6 @@ folder_ext2: /home/user/folder2
 count: 3
 bs: 1M
 type: zip
+host: '127.0.0.1'
+user: user2
+passwd: '1111'
