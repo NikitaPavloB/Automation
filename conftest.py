@@ -53,3 +53,7 @@ def stat():
     yield
     stat = getout("cat /proc/loadavg")
     checkout("echo 'time: {} count:{} size: {} load: {}'>> stat.txt".format(datetime.now().strftime("%H:%M:%S.%f"), data["count"], data["bs"], stat), "")
+    
+@pytest.fixture()
+def start_ttime():
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
