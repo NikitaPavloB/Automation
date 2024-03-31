@@ -80,3 +80,12 @@ class TestPositive:
         res_2 = (sshcheckout(data['host'], data['user'], data['passwd'], "echo '{}' | sudo -S dpkg -s p7zip-full".format(data['passwd']),
                           'Status: deinstall ok'))
         assert res_1 and res_2, "test-step0 Fail"
+
+
+
+   def test_step2(self, make_folders, clear_folders, make_files, start_time):
+       res1 = ssh_checkout(data["ip"], data["user"], data["passwd"], "cd {};"
+           " 7z a {}/arx2".format(data["folder_in"], data["folder_out"]), "Everything is Ok")
+       res2 = ssh_checkout(data["ip"], data["user"], data["passwd"], "ls {}".format(data["folder_out"]), "arx2.7z")
+       self.save_log(start_time, "log2.txt")
+       assert res1 and res2, "test2 FAIL"
